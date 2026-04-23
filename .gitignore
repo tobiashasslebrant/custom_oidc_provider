@@ -1,0 +1,14 @@
+# Build outputs
+bin/
+obj/
+
+# RSA private key — never commit
+keys/
+
+# User secrets
+appsettings.*.json
+!appsettings.Development.json
+
+# Logs
+*.log
+.idea
