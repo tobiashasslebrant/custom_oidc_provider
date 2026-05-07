@@ -128,20 +128,18 @@ public static class TokenEndpoints
 
         var tokenHash = TokenService.ComputeHash(rawToken);
 
-        // Atomically consume the refresh token
-        var updated = await db.RefreshTokens
-            .Where(t => t.TokenHash == tokenHash && !t.Used && t.ExpiresAt > DateTimeOffset.UtcNow
-                        && t.ClientId == client.ClientId)
-            .ExecuteUpdateAsync(s => s.SetProperty(t => t.Used, true));
+        var existing = await db.RefreshTokens.FirstOrDefaultAsync(
+            t => t.TokenHash == tokenHash && !t.Used && t.ExpiresAt > DateTimeOffset.UtcNow
+                 && t.ClientId == client.ClientId);
 
-        if (updated == 0)
+        if (existing is null)
         {
             logger.LogWarning("Invalid or replayed refresh token for client {ClientId}", client.ClientId);
             return TokenError("invalid_grant", "Refresh token is invalid, expired, or already used.");
         }
 
-        var existing = await db.RefreshTokens.FirstOrDefaultAsync(t => t.TokenHash == tokenHash);
-        if (existing is null) return TokenError("invalid_grant");
+        existing.Used = true;
+        await db.SaveChangesAsync();
 
         var user = await db.Users.FindAsync(existing.UserId);
         if (user is null) return TokenError("invalid_grant", "User not found.");

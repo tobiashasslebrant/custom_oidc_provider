@@ -9,12 +9,9 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' is not configured.");
-
 var issuer = builder.Configuration["Oidc:Issuer"] ?? "https://localhost:5000";
 
-builder.Services.AddDbContext<AppDbContext>(opts => opts.UseNpgsql(connectionString));
+builder.Services.AddDbContext<AppDbContext>(opts => opts.UseInMemoryDatabase("OidcDb"));
 
 
 builder.Services.AddSingleton<IKeyService, KeyService>();
@@ -49,7 +46,7 @@ var app = builder.Build();
 await using (var scope = app.Services.CreateAsyncScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    await db.Database.MigrateAsync();
+    await db.Database.EnsureCreatedAsync();
 
     if (app.Environment.IsDevelopment())
         await SeedDevelopmentDataAsync(scope.ServiceProvider);

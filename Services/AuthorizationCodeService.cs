@@ -19,15 +19,14 @@ public class AuthorizationCodeService(AppDbContext db) : IAuthorizationCodeServi
     {
         var codeHash = TokenService.ComputeHash(code);
 
-        // Atomically flip Used = true with a single UPDATE WHERE used = false.
-        // PostgreSQL executes this as one statement, so only one concurrent
-        // request can succeed even under race conditions.
-        var updated = await db.AuthorizationCodes
-            .Where(c => c.CodeHash == codeHash && !c.Used && c.ExpiresAt > DateTimeOffset.UtcNow)
-            .ExecuteUpdateAsync(s => s.SetProperty(c => c.Used, true));
+        var authCode = await db.AuthorizationCodes
+            .FirstOrDefaultAsync(c => c.CodeHash == codeHash && !c.Used && c.ExpiresAt > DateTimeOffset.UtcNow);
 
-        if (updated == 0) return null;
+        if (authCode is null) return null;
 
-        return await db.AuthorizationCodes.FirstOrDefaultAsync(c => c.CodeHash == codeHash);
+        authCode.Used = true;
+        await db.SaveChangesAsync();
+
+        return authCode;
     }
 }
