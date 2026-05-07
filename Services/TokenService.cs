@@ -17,7 +17,7 @@ public interface ITokenService
 
 public class TokenService(IKeyService keyService, IConfiguration configuration) : ITokenService
 {
-    private readonly string _issuer = configuration["Oidc:Issuer"] ?? "https://localhost:5000";
+    private readonly string _issuer = (configuration["Oidc:Issuer"] ?? "https://localhost:5000").TrimEnd('/');
 
     public string IssueAccessToken(Guid userId, string clientId, string[] scopes)
     {

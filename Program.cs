@@ -9,7 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var issuer = builder.Configuration["Oidc:Issuer"] ?? "https://localhost:5000";
+var issuer = (builder.Configuration["Oidc:Issuer"] ?? "https://localhost:5000").TrimEnd('/');
 
 builder.Services.AddDbContext<AppDbContext>(opts => opts.UseInMemoryDatabase("OidcDb"));
 
