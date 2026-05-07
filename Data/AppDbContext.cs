@@ -13,29 +13,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Client>(e =>
-        {
-            e.HasKey(c => c.ClientId);
-            e.Property(c => c.AllowedRedirectUris).HasColumnType("text[]");
-            e.Property(c => c.AllowedScopes).HasColumnType("text[]");
-            e.Property(c => c.AllowedGrantTypes).HasColumnType("text[]");
-        });
-
-        modelBuilder.Entity<AuthorizationRequest>(e =>
-        {
-            e.Property(r => r.Scopes).HasColumnType("text[]");
-        });
+        modelBuilder.Entity<Client>(e => e.HasKey(c => c.ClientId));
 
         modelBuilder.Entity<AuthorizationCode>(e =>
-        {
-            e.HasIndex(c => c.CodeHash).IsUnique();
-            e.Property(c => c.Scopes).HasColumnType("text[]");
-        });
+            e.HasIndex(c => c.CodeHash).IsUnique());
 
         modelBuilder.Entity<RefreshToken>(e =>
-        {
-            e.HasIndex(t => t.TokenHash).IsUnique();
-            e.Property(t => t.Scopes).HasColumnType("text[]");
-        });
+            e.HasIndex(t => t.TokenHash).IsUnique());
     }
 }

@@ -48,8 +48,7 @@ await using (var scope = app.Services.CreateAsyncScope())
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     await db.Database.EnsureCreatedAsync();
 
-    if (app.Environment.IsDevelopment())
-        await SeedDevelopmentDataAsync(scope.ServiceProvider);
+    await SeedDevelopmentDataAsync(scope.ServiceProvider);
 }
 
 app.UseAuthentication();
@@ -82,7 +81,10 @@ static async Task SeedDevelopmentDataAsync(IServiceProvider services)
             AllowedRedirectUris =
             [
                 "https://localhost:5001/callback",
-                "https://localhost:5001/signin-oidc"
+                "https://localhost:5001/signin-oidc",
+                "https://api.descope.com/oauth2/v1/callback",
+                "https://api.descope.com/oauth2/v1/signin-oidc"
+
             ],
             AllowedScopes = ["openid", "profile", "email"],
             AllowedGrantTypes = ["authorization_code", "refresh_token"],
