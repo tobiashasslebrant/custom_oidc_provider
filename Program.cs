@@ -55,6 +55,7 @@ await using (var scope = app.Services.CreateAsyncScope())
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapWelcomeEndpoints(issuer);
 app.MapDiscoveryEndpoints(issuer);
 app.MapJwksEndpoints();
 app.MapAuthorizationEndpoints(issuer);
