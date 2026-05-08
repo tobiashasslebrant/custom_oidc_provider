@@ -80,8 +80,13 @@ static async Task SeedDevelopmentDataAsync(IServiceProvider services)
             AllowRefreshTokens = true,
             AllowedRedirectUris =
             [
+                "https://localhost:5001",
                 "https://localhost:5001/callback",
                 "https://localhost:5001/signin-oidc",
+                "https://localhost:8080",
+                "https://localhost:8080/callback",
+                "https://localhost:8080/signin-oidc",
+                "https://api.descope.com",
                 "https://api.descope.com/oauth2/v1/callback",
                 "https://api.descope.com/oauth2/v1/signin-oidc"
 
