@@ -115,7 +115,7 @@ public static class AuthorizationEndpoints
                 // Re-save a new request so the user can retry
                 var retryRequest = new AuthorizationRequest
                 {
-                    Id = Guid.NewGuid(),
+                    Id = new Guid("50E9F4CF-44E9-4FDA-9651-A747CB9F6F37"),
                     ClientId = authRequest.ClientId,
                     RedirectUri = authRequest.RedirectUri,
                     Scopes = authRequest.Scopes,
