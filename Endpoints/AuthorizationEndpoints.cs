@@ -35,7 +35,7 @@ public static class AuthorizationEndpoints
                 return Results.BadRequest("Unknown client_id.");
 
             // Exact-match redirect URI
-            if (!client.AllowedRedirectUris.Any(a => a.StartsWith(redirectUri, StringComparison.InvariantCultureIgnoreCase)))
+            if (!client.AllowedRedirectUris.Any(a => redirectUri.StartsWith(a, StringComparison.InvariantCultureIgnoreCase)))
             {
                 logger.LogWarning("Invalid redirect_uri {RedirectUri} for client {ClientId}", redirectUri, clientId);
                 return Results.BadRequest("Invalid redirect_uri.");
