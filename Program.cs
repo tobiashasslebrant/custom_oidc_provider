@@ -82,6 +82,7 @@ static async Task SeedDevelopmentDataAsync(IServiceProvider services)
             [
                 "https://localhost",
                 "https://api.descope.com",
+                "https://custom-relaying-party-b5hybngbdde5a2f2.westeurope-01.azurewebsites.net"
             ],
             AllowedScopes = ["openid", "profile", "email"],
             AllowedGrantTypes = ["authorization_code", "refresh_token"],
