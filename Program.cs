@@ -95,7 +95,7 @@ static async Task SeedDevelopmentDataAsync(IServiceProvider services)
     {
         var user = new User
         {
-            Id = Guid.NewGuid(),
+            Id = new Guid("ca224913-31eb-49c0-969d-815f46162cd1"),
             Username = "testuser",
             Email = "testuser@example.com",
             GivenName = "Test",
