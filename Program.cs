@@ -100,7 +100,14 @@ static async Task SeedDevelopmentDataAsync(IServiceProvider services)
             Username = "testuser",
             Email = "testuser@example.com",
             GivenName = "Test",
-            FamilyName = "User"
+            FamilyName = "User",
+            RpOriginalAttributes = new RpOriginalAttributes()
+            {
+                    ApprovalOnEmailDelivaryEtc = [
+                        new Item("Newsletter1", 1),
+                        new Item("Newsletter2", 0)
+                    ]
+            }
         };
         user.HashedPassword = userHasher.HashPassword(user, "Password1!");
         await db.Users.AddAsync(user);
@@ -109,3 +116,8 @@ static async Task SeedDevelopmentDataAsync(IServiceProvider services)
     await db.SaveChangesAsync();
 }
 
+class RpOriginalAttributes
+{
+    public Item[] ApprovalOnEmailDelivaryEtc { get; init; }
+}
+class Item(string name, int value);

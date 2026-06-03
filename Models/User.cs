@@ -8,4 +8,5 @@ public class User
     public string HashedPassword { get; set; } = "";
     public string? GivenName { get; set; }
     public string? FamilyName { get; set; }
+    public RpOriginalAttributes RpOriginalAttributes { get; set; }
 }
