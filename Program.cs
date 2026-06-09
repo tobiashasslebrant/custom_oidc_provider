@@ -104,8 +104,8 @@ static async Task SeedDevelopmentDataAsync(IServiceProvider services)
             RpOriginalAttributes = new RpOriginalAttributes()
             {
                     ApprovalOnEmailDelivaryEtc = [
-                        new Item("Newsletter1", 1),
-                        new Item("Newsletter2", 0)
+                        new Item { Name = "Newsletter1", Value = 1 },
+                        new Item { Name = "Newsletter2", Value = 0 }
                     ]
             }
         };
@@ -118,6 +118,10 @@ static async Task SeedDevelopmentDataAsync(IServiceProvider services)
 
 public class RpOriginalAttributes
 {
-    public Item[] ApprovalOnEmailDelivaryEtc { get; init; }
+    public IList<Item> ApprovalOnEmailDelivaryEtc { get; set; } = [];
 }
-public class Item(string name, int value);
+public class Item
+{
+    public string Name { get; set; } = string.Empty;
+    public int Value { get; set; }
+}

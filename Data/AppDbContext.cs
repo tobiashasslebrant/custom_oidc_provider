@@ -20,5 +20,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
         modelBuilder.Entity<RefreshToken>(e =>
             e.HasIndex(t => t.TokenHash).IsUnique());
+
+        modelBuilder.Entity<User>(e =>
+            e.OwnsOne(u => u.RpOriginalAttributes, rp =>
+                rp.OwnsMany(r => r.ApprovalOnEmailDelivaryEtc)));
     }
 }
