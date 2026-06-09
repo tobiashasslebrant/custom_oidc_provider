@@ -116,8 +116,8 @@ static async Task SeedDevelopmentDataAsync(IServiceProvider services)
     await db.SaveChangesAsync();
 }
 
-class RpOriginalAttributes
+public class RpOriginalAttributes
 {
     public Item[] ApprovalOnEmailDelivaryEtc { get; init; }
 }
-class Item(string name, int value);
+public class Item(string name, int value);

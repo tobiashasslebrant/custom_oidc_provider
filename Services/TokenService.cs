@@ -4,6 +4,7 @@ using System.Text;
 using CustomOidcProvider.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Text.Json;
 
 namespace CustomOidcProvider.Services;
 
@@ -59,6 +60,11 @@ public class TokenService(IKeyService keyService, IConfiguration configuration) 
             if (user.GivenName is not null) claims.Add(new Claim("given_name", user.GivenName));
             if (user.FamilyName is not null) claims.Add(new Claim("family_name", user.FamilyName));
             claims.Add(new Claim("preferred_username", user.Username));
+
+            claims.Add(new Claim(
+                type: "RpOriginalAttributes",
+                value: JsonSerializer.Serialize(user.RpOriginalAttributes),
+                valueType: "json"));
         }
 
         if (scopes.Contains("email"))
